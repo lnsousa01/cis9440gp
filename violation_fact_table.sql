@@ -2,7 +2,7 @@
 WITH complaints AS(
 SELECT * FROM `cis9440gp.RawDataset.RestaurantInspection`),
 violation_facts_table AS(
-    SELECT grade_dim_id, violation_dim_id, location_dim_id, business_dim_id, date_dim_id, ROW_NUMBER() OVER() AS unique_violation_id
+    SELECT DISTINCT grade_dim_id, violation_dim_id, location_dim_id, business_dim_id, date_dim_id, ROW_NUMBER() OVER() AS unique_violation_id
     FROM complaints
     LEFT JOIN `cis9440gp.dbt_qlin.date_dimension`
         ON CONCAT(`cis9440gp.dbt_qlin.date_dimension`.year, '-',`cis9440gp.dbt_qlin.date_dimension`.month,'-', `cis9440gp.dbt_qlin.date_dimension`.day)  = SUBSTRING(complaints.inspection_date,1,10)
@@ -264,5 +264,5 @@ violation_facts_table AS(
     LEFT JOIN `cis9440gp.dbt_lsousa.business_dim`
     ON `cis9440gp.dbt_lsousa.business_dim`.business_name = complaints.dba
         AND `cis9440gp.dbt_lsousa.business_dim`.cuisine_description = complaints.cuisine_description
-        WHERE `cis9440gp.dbt_lsousa.grade_dim`.grade = complaints.grade AND `cis9440gp.dbt_lsousa.violation_dim`.violation_code = complaints.violation_code AND `cis9440gp.dbt_qlin.location_dimension`.street_address = complaints.street AND `cis9440gp.dbt_qlin.location_dimension`.zipcode = complaints.zipcode)
-            SELECT * FROM violation_facts_table WHERE business_dim_id IS NOT NULL AND location_dim_id IS NOT NULL AND date_dim_id IS NOT NULL
+        WHERE `cis9440gp.dbt_lsousa.grade_dim`.grade = complaints.grade AND `cis9440gp.dbt_lsousa.violation_dim`.violation_code = complaints.violation_code AND `cis9440gp.dbt_qlin.location_dimension`.street_address = complaints.street AND `cis9440gp.dbt_qlin.location_dimension`.zipcode = complaints.zipcode AND CONCAT(`cis9440gp.dbt_qlin.date_dimension`.year, '-',`cis9440gp.dbt_qlin.date_dimension`.month,'-', `cis9440gp.dbt_qlin.date_dimension`.day)  = SUBSTRING(complaints.inspection_date,1,10) AND `cis9440gp.dbt_qlin.location_dimension`.community_board = complaints.community_board AND `cis9440gp.dbt_qlin.location_dimension`.city_borough = UPPER(complaints.boro))
+            SELECT * FROM violation_facts_table 
