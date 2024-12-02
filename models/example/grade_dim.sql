@@ -10,8 +10,7 @@ WITH grade_table AS(SELECT DISTINCT(grade) AS grade_descriptive
             WHEN grade_descriptive = 'A' THEN 'A'
             WHEN grade_descriptive = 'B' THEN 'B'
             WHEN grade_descriptive = 'C' THEN 'C'
-            WHEN grade_descriptive = 'Z' THEN 'Grade Pending'
-            WHEN grade_descriptive = 'P' THEN 'Grade Pending'
+            WHEN grade_descriptive IN ('Z', 'P') THEN 'Grade Pending'
             WHEN grade_descriptive = 'N' THEN 'Not Yet Graded'
         ELSE 'N/A'
         END AS grade
