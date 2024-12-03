@@ -267,5 +267,5 @@ violation_facts_table AS(
     LEFT JOIN `cis9440gp.dbt_lsousa.business_dim`
     ON `cis9440gp.dbt_lsousa.business_dim`.business_name = violations.dba
         AND `cis9440gp.dbt_lsousa.business_dim`.cuisine_description = violations.cuisine_description 
-        AND `cis9440gp.dbt_lsousa.business_dim`.address = CONCAT(violations.building,' ', violations.street))
+        AND `cis9440gp.dbt_lsousa.business_dim`.incident_address = CONCAT(violations.building,' ', violations.street))
             SELECT * FROM violation_facts_table WHERE location_dim_id = 241
