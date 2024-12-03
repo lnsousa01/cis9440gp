@@ -264,8 +264,9 @@ violation_facts_table AS(
             AND UPPER(violations.boro) = `cis9440gp.dbt_qlin.location_dimension`.city_borough
             AND violations.street=`cis9440gp.dbt_qlin.location_dimension`.street_address
             AND violations.zipcode = `cis9440gp.dbt_qlin.location_dimension`.zipcode 
+            AND violations.community_board = `cis9440gp.dbt_qlin.location_dimension`.community_board
     LEFT JOIN `cis9440gp.dbt_lsousa.business_dim`
     ON `cis9440gp.dbt_lsousa.business_dim`.business_name = violations.dba
         AND `cis9440gp.dbt_lsousa.business_dim`.cuisine_description = violations.cuisine_description 
         AND `cis9440gp.dbt_lsousa.business_dim`.incident_address = CONCAT(violations.building,' ', violations.street))
-            SELECT * FROM violation_facts_table WHERE location_dim_id = 241
+            SELECT * FROM violation_facts_table 
