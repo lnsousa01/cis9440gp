@@ -2,7 +2,7 @@
 WITH violations AS(
 SELECT * FROM `cis9440gp.RawDataset.RestaurantInspection`),
 violation_facts_table AS(
-    SELECT DISTINCT camis AS unique_violation_id, grade_dim_id, violation_dim_id, location_dim_id, business_dim_id, date_dim_id
+    SELECT DISTINCT camis, grade_dim_id, violation_dim_id, location_dim_id, business_dim_id, date_dim_id
     FROM violations
     RIGHT JOIN `cis9440gp.dbt_qlin.date_dimension` ON
         `cis9440gp.dbt_qlin.date_dimension`.date=DATE(violations.inspection_date)
@@ -269,4 +269,4 @@ violation_facts_table AS(
     ON `cis9440gp.dbt_lsousa.business_dim`.business_name = violations.dba
         AND `cis9440gp.dbt_lsousa.business_dim`.cuisine_description = violations.cuisine_description 
         AND `cis9440gp.dbt_lsousa.business_dim`.incident_address = CONCAT(violations.building,' ', violations.street))
-            SELECT * FROM violation_facts_table WHERE camis = '50012131'
+            SELECT ROW_NUMBER() OVER() AS unique_violation_id, * FROM violation_facts_table WHERE camis = '50012131'
