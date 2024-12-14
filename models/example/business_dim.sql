@@ -95,5 +95,5 @@ location_table AS
         ELSE 'Other Types'
     END AS food_establishment_types, incident_address
 FROM `cis9440gp.RawDataset.FoodEstablishment`),
-final AS(SELECT DISTINCT address, incident_address, business_name, cuisine_description, food_establishment_type, city_borough, location_table.zipcode, street, business_table.community_board, camis FROM business_table CROSS JOIN location_table WHERE location_table.zipcode = business_table.zipcode AND business_table.street=location_table.street_name AND location_table.community_board=business_table.community_board AND address=incident_address)
+final AS(SELECT DISTINCT address, incident_address, business_name, cuisine_description, food_establishment_types, city_borough, location_table.zipcode, street, business_table.community_board, camis FROM business_table CROSS JOIN location_table WHERE location_table.zipcode = business_table.zipcode AND business_table.street=location_table.street_name AND location_table.community_board=business_table.community_board AND address=incident_address)
 SELECT business_name, cuisine_description, food_establishment_types, incident_address, ROW_NUMBER() OVER() AS business_dim_id  FROM final 
